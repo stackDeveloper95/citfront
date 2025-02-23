@@ -1,0 +1,43 @@
+#responsive-bg {
+    width:100%;
+    align-items: center;/* Default for large screens */
+  }
+
+#searchbar,#form{
+  height: 100vh;
+}
+/* #searchbar{
+  border-right: 2px solid  rgb(0, 0, 0);
+} */
+  
+  @media (max-width: 991.98px) { /* Medium screens (md) */
+    #responsive-bg {
+        width:50%;
+        padding-left: 2px;
+       
+    }
+  }
+  
+  @media (max-width: 575.98px) { /* Small screens (sm) */
+    #responsive-bg {
+        width:100%  /* Or a different color for small screens */
+    }
+  }
+
+  /* ProjectForm.css */
+.form-check {
+  display: flex;
+  align-items: center;
+}
+
+.form-check-label {
+  margin-left: 0.5rem;
+}
+#hr{
+  color: black;
+  height: 300px;
+}
+
+
+
+  

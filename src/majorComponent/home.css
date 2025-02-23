@@ -1,0 +1,212 @@
+#home {
+  background-image: url('../images/cit.jpg');
+  /* Replace with your image path */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  height: 100vh;
+  overflow-x: hidden;
+  overflow-y: hidden;
+
+
+
+}
+
+#cont {
+  overflow-y: scroll;
+  padding-bottom: 50px;
+}
+
+@media (max-width: 991.98px) {
+
+  /* Medium screens (md) */
+  #home {
+    overflow-y: scroll
+  }
+}
+
+@media (max-width: 575.98px) {
+
+  /* Small screens (sm) */
+  #responsive-bg {
+    overflow-y: hidden;
+  }
+
+  #home {
+    overflow-y: hidden;
+  }
+}
+
+
+/* In your CSS file (e.g., profilepage.css or another relevant CSS file) */
+
+/* In your CSS file (e.g., profilepage.css or another relevant CSS file) */
+
+.loading-text {
+  position: absolute;
+  /* Center the text using absolute positioning */
+  top: 50%;
+  /* Vertical center */
+  left: 50%;
+  /* Horizontal center */
+  transform: translate(-50%, -50%);
+  /* Properly center the text */
+  font-size: 2rem;
+  /* Larger text size */
+  font-weight: bold;
+  /* Bold text */
+  color: #007bff;
+  /* Choose a color */
+  text-align: center;
+  /* Center align the text */
+  letter-spacing: 1px;
+  /* Optional: Add letter spacing for better readability */
+  animation: fadeIn 1.5s ease-in-out;
+  /* Optional: Smooth fade-in effect */
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+
+.app-container {
+  display: flex;
+  height: 100vh;
+}
+
+.left-pane {
+  flex: 1;
+  border-right: 1px solid #ccc;
+  padding: 10px;
+}
+
+.right-pane {
+  flex: 1;
+}
+
+.chat-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.messages {
+  flex: 1;
+  overflow-y: auto;
+  padding: 10px;
+  border-bottom: 1px solid #ccc;
+}
+
+.message {
+  margin-bottom: 10px;
+  padding: 5px;
+  background-color: #f1f1f1;
+  border-radius: 5px;
+  width: 45%
+}
+
+.message2 {
+  margin-bottom: 10px;
+  margin-left: 50%;
+  padding: 5px;
+  background-color: #f1f1f1;
+  border-radius: 5px;
+  width: 45%
+}
+
+.chat-input {
+  display: flex;
+  padding: 10px;
+}
+
+.chat-input input {
+  flex: 1;
+  padding: 5px;
+  margin-right: 5px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+}
+
+.chat-input button {
+  padding: 5px 10px;
+  border: none;
+  background-color: #007bff;
+  color: white;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+#main {
+  height: 94vh;
+}
+
+.message {
+  display: flex;
+  align-items: center;
+  margin: 5px 0;
+}
+
+.message.ai {
+  justify-content: flex-start;
+  margin-left: 50%;
+  /* Align AI messages to the left */
+}
+
+.message.human {
+  justify-content: flex-start;
+  /* Align human messages to the right */
+}
+
+.message div {
+  padding: 10px;
+  border-radius: 10px;
+  max-width: 60%;
+  display: flex;
+  flex-direction: row;
+}
+
+.message.ai div {
+  background-color: #e1f5fe;
+  /* Light blue for AI */
+  color: #000;
+}
+
+.message.human div {
+  background-color: #c8e6c9;
+  /* Light green for human */
+  color: #000;
+}
+
+.message .icon {
+  margin-left: 10px;
+  cursor: pointer;
+}
+
+.loader {
+  margin-left: 10px;
+  font-size: 14px;
+  color: #007bff;
+}
+
+.loader::after {
+  content: "⏳";
+  animation: spin 1s infinite linear;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}

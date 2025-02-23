@@ -1,0 +1,50 @@
+#searchbar {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background-color: #242629;
+  /* Dark background */
+  padding: 10px;
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.results {
+  height: 100vh;
+  /* Full viewport height */
+  overflow-y: auto;
+  margin-top: 10px;
+
+  /* Scrollbar styling */
+  scrollbar-width: thin;
+  /* Firefox */
+  scrollbar-color: #dc3545 #6c757d;
+  /* Firefox - thumb and track color (Red and Gray) */
+}
+
+/* Webkit-based browsers (Chrome, Safari, Edge) */
+.results::-webkit-scrollbar {
+  width: 6px;
+  /* Line width */
+}
+
+.results::-webkit-scrollbar-track {
+  background-color: #6c757d;
+  /* Gray track */
+}
+
+.results::-webkit-scrollbar-thumb {
+  background-color: #dc3545;
+  /* Red thumb */
+  border-radius: 10px;
+  /* Rounded edges */
+}
+
+.results::-webkit-scrollbar-thumb:hover {
+  background-color: #c82333;
+  /* Darker red on hover */
+}
+
+.card {
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}

@@ -1,0 +1,29 @@
+/* ProjectForm.css */
+.form-check {
+    display: flex;
+    align-items: center;
+  }
+  
+  .form-check-label { 
+    margin-left: 0.5rem;
+     color: white;
+     }
+  
+  .form-background {
+    background-image: url('../images/cit.jpg'); /* Replace with your image path */
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+#form{
+  height: 800px;;
+  background-attachment: fixed;
+  overflow-y: scroll;
+
+}
+
+#img{
+  height: 100px;
+  width:100px
+}
+  
