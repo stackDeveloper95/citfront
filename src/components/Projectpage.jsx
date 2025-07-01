@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import "./projectpage.css";
 import { api } from '../convex/_generated/api';
 import { useQuery } from "convex/react";
 import { Link } from 'react-router-dom';
+import "./projectpage.css"
 
 function ProjectPage() {
   const tasks = useQuery(api.project.get);
@@ -30,14 +30,14 @@ function ProjectPage() {
   };
 
   return (
-    <div id="pro" className="container">
-      <header className="my-4">
+    <div id="pro" className="pt-5 mt-2">
+      <header className="my-4 d-flex flex-column justify-content-center align-items-center ">
         <h1 className="display-3">Project Portal</h1>
         <p className="lead">Search and explore projects from various departments.</p>
       </header>
 
-      <div className="row mb-4">
-        <div className="col-md-4 mt-3">
+      <div className="row mb-4 d-flex justify-content-center">
+        <div className="col-6 col-md-4 pt-4 px-4">
           <input
             type="text"
             className="form-control"
@@ -46,7 +46,7 @@ function ProjectPage() {
             onChange={(e) => setProjectName(e.target.value)}
           />
         </div>
-        <div className="col-md-6 mt-3">
+        <div className="col-6 col-md-4 pt-4 px-4">
           <select
             className="form-control"
             value={department}
@@ -60,31 +60,47 @@ function ProjectPage() {
             ))}
           </select>
         </div>
-        <button className="mt-3 col-md-2 btn btn-danger" onClick={handleSearch}>
-          Search
-        </button>
+        <div className="d-flex justify-content-center">
+          <button className="mt-3 col-md-2 btn btn-success" onClick={handleSearch}>
+            Search
+          </button>
+        </div>
       </div>
 
-      <div className="row">
+      <div className="row p-5">
         {projects.map((project, index) => (
-          <div className="col-lg-4 col-md-6 mb-4" key={index}>
-            <div className="card h-100">
+          <div id="mainProfile" className=" col-sm-6 col-md-4 col-lg-4 mb-4" key={index}>
+
+            <div className="">
               <img
                 src={project.images}
                 alt={project.projectName}
                 className="card-img-top"
                 style={{
                   objectFit: "cover",
-                  height: "200px",  // Fixed height for image
-                  width: "100%",    // Full width of the card
+                  height: "250px",  // Fixed height for image
+                  width: "100%",
+                  borderRadius: "30px",
+                  zIndex: "0"  // Full width of the card
                 }}
               />
-              <div className="card-body">
-                <h4 className="card-title">{project.projectName}</h4>
-                <p className="card-text">
+              <div id="profile" className="d-flex flex-column justify-content-center align-items-center border border-light 
+              opacity-75" style={{
+                  position: 'relative',
+                  top: "-250px",
+                  borderRadius: "30px",
+                  zIndex: "1",
+                  height: "250px",  // Fixed height for image
+                  width: "100%",
+                  userSelect: "none",
+                  opacity: "2px",
+
+                }} >
+                <h4 className="card-title text-dark">{project.projectName}</h4>
+                <p className="card-text text-dark">
                   <strong>Department:</strong> {project.department}
                 </p>
-                <p className="card-text">
+                <p className="card-text text-dark">
                   <strong>Type:</strong> {project.type}
                 </p>
                 <Link className="btn btn-sm btn-outline-primary" to={`/profile/${project.fileId}`}>view profile</Link>

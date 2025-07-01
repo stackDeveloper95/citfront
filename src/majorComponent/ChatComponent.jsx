@@ -1,5 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
-import "./home.css"; // Add styling here or use inline styles
+import React, { useState, useRef, useEffect } from "react"; // Add styling here or use inline styles
 import Navbar from "../components/Navbar";
 import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
 import VolumeMuteIcon from '@mui/icons-material/VolumeMute';
@@ -8,8 +7,9 @@ import { useParams } from "react-router-dom";
 import { useQuery } from "convex/react";
 import { api } from "../convex/_generated/api";
 import { useAction } from "convex/react";
-import {chatSession} from "../googleai"
-
+import { chatSession } from "../googleai";
+import SendIcon from '@mui/icons-material/Send';
+import Person4Icon from '@mui/icons-material/Person4';
 
 
 
@@ -51,17 +51,17 @@ const ChatPage = ({ id }) => {
         
         The provided content is: ${unformatedData}.
         `;
-        
-        
+
+
 
 
         const aimodelResult = await chatSession.sendMessage(PROMPT);
         console.log(aimodelResult.response.text)
-        const htmlBlock = aimodelResult.response.text().replace('```',"").replace("html","").replace("```","");
+        const htmlBlock = aimodelResult.response.text().replace('```', "").replace("html", "").replace("```", "");
         const parser = new DOMParser();
         const doc = parser.parseFromString(htmlBlock, 'text/html');
-         const textContent = doc.body.textContent.trim();
-         console.log(textContent)
+        const textContent = doc.body.textContent.trim();
+        console.log(textContent)
 
         const receiveData = { type: "ai", data: textContent };
         setMessages((prevMessages) => [...prevMessages, receiveData]);
@@ -97,55 +97,52 @@ const ChatPage = ({ id }) => {
   }, [messages]);
 
   return (
-    <div className="chat-container">
-      <header className="my-4">
-        <h5 className="display-9 text-center">
-          <AutoAwesomeIcon /> AI Chat With PDF
-        </h5>
-      </header>
+    <div className="container-fluid bg-dark text-light   d-flex flex-column p-3">
+      <h4 className="text-center text-light mb-3"><AutoAwesomeIcon />   Chat with Project Assistant</h4>
+
       <div
-        className="messages-container bg-dark"
+        className=" overflow-auto p-3 mb-3 "
         ref={messagesContainerRef}
-        style={{
-          height: "89%",
-          overflowY: "auto",
-          border: "1px solid #ccc",
-          padding: "10px",
-          marginBottom: "10px",
-        }}
+        style={{ borderRadius: "10px", height: "620px", backgroundColor: "#1e1f2b" }}
       >
         {messages.map((msg, index) => (
-          <div className="messageMain">
-          <div className={`message ${msg.type} row`} key={index}>
-            {msg.type === "human" ? (
-              <div className="col-10">{msg.data}</div>
-            ) : (
-             <div  className="col-12">{msg.data}</div>
-            )}
-            <div className="icon col-2" onClick={() => onClickSpeech(msg.data)}>
-              <VolumeUpIcon />
+          <div key={index} className={`d-flex mb-3 ${msg.type === 'human' ? 'justify-content-end' : 'justify-content-start'}`}>
+            <div className={`d-flex ${msg.type === 'human' ? 'flex-row-reverse' : 'flex-row'} align-items-end`}>
+              <div className="rounded-circle bg-primary text-dark fw-bold d-flex align-items-center justify-content-center me-2 ms-2 border bordar-light" style={{ width: "26px", height: "26px" }}>
+                {msg.type === 'human' ? <Person4Icon /> : <AutoAwesomeIcon />}
+              </div>
+              <div className={`p-2 px-3 rounded shadow-sm ${msg.type === 'human' ? 'bg-primary text-light' : 'bg-secondary text-light'}`}>
+                <div>{msg.data}</div>
+                <div className="text-muted small text-end mt-1" style={{ fontSize: "0.75rem" }}>
+                  {new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                </div>
+              </div>
             </div>
-          </div>
-          
           </div>
         ))}
         <div ref={messagesEndRef} />
       </div>
-      <div className="chat-input">
+
+      <div className="d-flex align-items-center border border-light rounded-pill p-2">
         <input
           type="text"
+          className="form-control bg-dark border-0 text-light me-2"
+          placeholder="Type your message..."
           value={input}
           onChange={(e) => setInput(e.target.value)}
           onKeyPress={handleKeyPress}
-          placeholder="Type a message..."
           disabled={loading}
         />
-        <button onClick={handleSend} disabled={loading}>
-          Send
+        <button className="btn btn-primary rounded-circle" onClick={handleSend} disabled={loading}>
+          <i className="bi bi-send"> <SendIcon /></i>
         </button>
-        {loading && <div className="loader">Loading...</div>} {/* Loader */}
       </div>
+
+      {loading && (
+        <div className="text-center text-muted small mt-2">Loading...</div>
+      )}
     </div>
+
   );
 };
 
@@ -160,22 +157,24 @@ const PdfViewer = ({ url }) => (
 );
 
 const Chat = () => {
-  const {id}=useParams();
+  const { id } = useParams();
   const projects = useQuery(api.project.getByFileId, { fileId: id });
-  const project=projects[0];
+  const project = projects[0];
 
   return (
     <>
-    <Navbar/>
-    <div className="app-container" id="main">
-      <div className="left-pane">
-        <ChatPage id={project.fileId}/>
+      <Navbar />
+      <div style={{ marginTop: "50px", height: "400px" }} className="app-container bg-dark text-light vh-100 d-flex justify-content-center align-items-center">
+        <div className="container">
+          <div className="row justify-content-center">
+            <div style={{ height: "750px" }} className=" col-12 col-md-10 col-lg-8 col-xl-6 ">
+              <ChatPage id={project.fileId} />
+            </div>
+          </div>
+        </div>
       </div>
-      <div className="right-pane">
-        <PdfViewer url={project.pdf} />
-      </div>
-    </div>
     </>
+
   );
 };
 

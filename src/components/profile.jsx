@@ -3,85 +3,153 @@ import "./profilepage.css";
 import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
 import { Link } from "react-router-dom";
 
+
+
 const ProfilePage = ({ projects }) => {
+
   return (
-    <div id="profile" className="container my-5">
-      {projects.map((project, index) => (
-        <div key={index} className="card card-transparent shadow-sm mb-4">
+    <div
+      className="d-flex gap-3 justify-content-center align-items-center"
+      style={{ minHeight: "100vh", padding: "2rem" }}
+
+    >
+      <div className="d-flex gap-2 flex-column " style={{ minHeight: "50vh", padding: "2rem" }} >
+        {projects.map((project, index) => (<div className="">
+
+          <div className="bg-white rounded shadow-sm d-flex gap-2 flex-row justify-content-start align-items-center p-3 mb-3">
+            <h2 className="h6 mb-0 me-2 text-secondary">Type:</h2>
+            <span className="text-primary">{project.type}</span>
+          </div>
+
+
           <div
-            className="card-body"
-            style={{
-              maxHeight: "85vh",
-              overflowY: "scroll",
-              paddingRight: "10px",
-              border: "1px solid #ddd",
-              borderRadius: "5px",
-              backgroundColor: "rgba(249, 249, 249, 0.8)", // Slight transparency
-            }}
+            key={index}
+            className="bg-white shadow-sm rounded-4 p-4 mb-5 "
+            style={{ boxShadow: "0 10px 30px rgba(0,0,0,0.08)" }}
           >
-            <h1 className="card-title text-primary">{project.projectName}</h1>
-            <p className="card-text">{project.desc}</p>
+            {/* Header with Image and Email */}
+            <div className="d-flex align-items-center mb-4">
+              <img
+                src={project.images}
+                alt="Profile"
+                style={{
+                  width: "300px",
+                  height: "300px",
+                  borderRadius: "10px",
+                  objectFit: "cover",
+                  marginRight: "1rem",
+                }}
+              />
+            </div>
 
-            <h5 className="mt-3">
-              Project Type: <span className="badge bg-secondary">{project.type}</span>
-            </h5>
-            <h5 className="mt-3">
-              Department: <span className="badge bg-info">{project.department}</span>
-            </h5>
+          </div>
+        </div>))}
 
-            <h3 className="mt-4">Project Prototype</h3>
-            <div className="row mb-4">
-              <div className="col-md-12">
-                <img
-                  src={project.images}
-                  alt="Project Prototype"
-                  className="img-fluid rounded shadow-sm"
-                />
+      </div>
+      <div className="w-100" style={{ maxWidth: "700px" }}>
+        {projects.map((project, index) => (
+          <div
+            key={index}
+            className="bg-white shadow-sm rounded-4 p-4 mb-5"
+            style={{ boxShadow: "0 10px 30px rgba(0,0,0,0.08)", height: "450px" }}
+          >
+            {/* Header with Image and Email */}
+            <div className="d-flex align-items-center mb-4">
+              <img
+                src={project.images}
+                alt="Profile"
+                style={{
+                  width: "64px",
+                  height: "64px",
+                  borderRadius: "50%",
+                  objectFit: "cover",
+                  marginRight: "1rem",
+                }}
+              />
+              <div>
+                <h5 className="mb-0 text-dark">{project.projectName}</h5>
+                <p className="text-muted mb-0 text-dark">{project.
+                  desc
+                  || "there is no desc"}</p>
               </div>
             </div>
 
-            <h3 className="mt-4">Project Report</h3>
-            <div className="d-flex gap-3">
-             <Link  to={`/chat/${project.fileId}`}className="btn btn-primary">
-                <AutoAwesomeIcon/>Chat with pdf
-                </Link>
-              <a href={project.pdf} target="blank" download className="btn btn-success">
-                Download PDF
-              </a>
+            {/*            
+            <div className="mb-4">
+              <div className="d-flex justify-content-between py-2 border-bottom">
+                <span>Name</span>
+                <span className="text-muted">{project.projectName}</span>
+              </div>
+              <div className="d-flex justify-content-between py-2 border-bottom">
+                <span>Email account</span>
+                <span className="text-muted">{project.email || "yourname@gmail.com"}</span>
+              </div>
+              <div className="d-flex justify-content-between py-2 border-bottom">
+                <span>Mobile number</span>
+                <span className="text-muted">{project.mobile || "Add number"}</span>
+              </div>
+              <div className="d-flex justify-content-between py-2 border-bottom">
+                <span>Location</span>
+                <span className="text-muted">{project.location || "USA"}</span>
+              </div>
             </div>
 
-            <h3 className="mt-4">Team Members</h3>
-            <div className="list-group">
-              {project.no1 && (
-                <li className="list-group-item d-flex justify-content-between align-items-center">
-                  No 1: {project.no1}
-                  <span className="badge bg-primary rounded-pill">Member</span>
-                </li>
-              )}
-              {project.no2 && (
-                <li className="list-group-item d-flex justify-content-between align-items-center">
-                  No 2: {project.no2}
-                  <span className="badge bg-primary rounded-pill">Member</span>
-                </li>
-              )}
-              {project.no3 && (
-                <li className="list-group-item d-flex justify-content-between align-items-center">
-                  No 3: {project.no3}
-                  <span className="badge bg-primary rounded-pill">Member</span>
-                </li>
-              )}
-              {project.no4 && (
-                <li className="list-group-item d-flex justify-content-between align-items-center">
-                  No 4: {project.no4}
-                  <span className="badge bg-primary rounded-pill">Member</span>
-                </li>
-              )}
+           
+            <div className="text-end">
+              <button className="btn btn-primary">Save Change</button>
+            </div> */}
+
+            {/* Chat and PDF Download Section */}
+            <div className="d-flex flex-wrap gap-3 mt-4">
+              <Link
+                to={`/chat/${project.fileId}`}
+                className="btn btn-outline-primary d-flex align-items-center gap-2"
+              >
+                <AutoAwesomeIcon />
+                Chat with PDF
+              </Link>
+              <a
+                href={project.pdf}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn btn-outline-success"
+              >
+                View PDF
+              </a>
+            </div>
+            <div className="pt-2">
+
+              <p className="text-dark mb-0 text-dark">View the PDF, and ask the AI if you have any questions  <AutoAwesomeIcon /></p>
+            </div>
+
+
+
+            {/* Team Members Section */}
+            <div className="mt-4">
+              <h6>Team Members</h6>
+              <ul className="list-group rounded shadow-sm">
+                {["no1", "no2", "no3", "no4"].map((key, idx) => {
+                  const member = project[key];
+                  return (
+                    member && (
+                      <li
+                        key={idx}
+                        className="list-group-item d-flex justify-content-between align-items-center"
+                      >
+                        {`No ${idx + 1}: ${member}`}
+                        <span className="badge bg-primary rounded-pill">Member</span>
+                      </li>
+                    )
+                  );
+                })}
+              </ul>
             </div>
           </div>
-        </div>
-      ))}
+        ))}
+      </div>
     </div>
   );
 };
 
 export default ProfilePage;
+

@@ -1,25 +1,41 @@
-*{
-    padding-left: 0px;
-    margin: 0px;
-    border: 0px;
-  
-    
-  
+* {
+  padding-left: 0px;
+  margin: 0px;
+  border: 0px;
+
+
+
 }
-div, p, h1, h2, h3 {
-    padding: 0;
-  }
-.hea{
-    color: brown;
-    }
-#nav{
-  background-color: rgb(191, 40, 40);
+
+/* Global custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
 }
-.image{
-  height: 40px;
-  width: 40px;
+
+::-webkit-scrollbar-track {
+  background: #0d1117;
+  /* dark background or transparent */
 }
-#app{
+
+::-webkit-scrollbar-thumb {
+  background-color: #7e809e;
+  /* scrollbar thumb color */
+  border-radius: 10px;
+  border: 2px solid transparent;
+  background-clip: content-box;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: #8b8dba;
+}
+
+/* Firefox support */
+body {
+  scrollbar-width: thin;
+  scrollbar-color: #989ac4 #0d1117;
+}
+
+/* #app {
   height: 100vh;
   overflow-y: hidden;
-}
+} */

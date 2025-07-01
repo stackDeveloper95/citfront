@@ -1,5 +1,19 @@
-#pro{
-    overflow-y: scroll;
-    height: 100vh;
-    padding-bottom: 90px;
+#profile:hover {
+    background-color: transparent;
+    transition: 0.5s;
+
+}
+
+.profile:hover img {
+    transform: scale(1.5);
+    /* or any effect you want */
+    transition: 0.5s;
+}
+
+#profile {
+    background-color: rgb(255, 255, 255);
+}
+
+#mainProfile {
+    height: 300px;
 }

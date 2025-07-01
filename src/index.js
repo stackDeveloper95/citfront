@@ -6,15 +6,16 @@ import "bootstrap/dist/js/bootstrap.min.js";
 import App from './App';
 import { ConvexProvider, ConvexReactClient } from "convex/react";
 import { SnackbarProvider } from "notistack";
+import "./custom.scss"
 
 const convex = new ConvexReactClient("https://precise-mammoth-342.convex.cloud");
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-   <ConvexProvider client={convex}>
-   <SnackbarProvider maxSnack={3}>
-      <App />
+    <ConvexProvider client={convex}>
+      <SnackbarProvider maxSnack={3}>
+        <App />
       </SnackbarProvider>
     </ConvexProvider>
 

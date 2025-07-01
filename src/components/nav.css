@@ -1,0 +1,22 @@
+@import url('https://fonts.googleapis.com/css2?family=Cal+Sans&family=Comic+Relief:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cal+Sans&family=Comic+Relief:wght@400;700&display=swap');
+
+.navbar {
+    transition: 0.5s;
+
+    /* Fully transparent background */
+}
+
+.navbaronscroll {
+    background-color: blueviolet;
+    transition: 2s;
+    height: 56px;
+
+}
+
+.fostyle {
+    font-family: "Comic Relief", system-ui;
+    font-weight: 700;
+    font-style: normal;
+
+}

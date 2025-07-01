@@ -1,5 +1,5 @@
 /* ProjectForm.css */
-.form-check {
+/* .form-check {
     display: flex;
     align-items: center;
   }
@@ -10,7 +10,7 @@
      }
   
   .form-background {
-    background-image: url('../images/cit.jpg'); /* Replace with your image path */
+    background-image: url('../images/cit.jpg'); 
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -26,4 +26,72 @@
   height: 100px;
   width:100px
 }
-  
+   */
+/* ProjectForm.css */
+
+.form-background {
+  background-color: #ffffff;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  border-radius: 16px;
+  max-width: 800px;
+  margin: auto;
+}
+
+.form-background h4 {
+  font-weight: 600;
+}
+
+.form-background label {
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+  color: #333;
+}
+
+.form-background input[type="text"],
+.form-background textarea,
+.form-background select,
+.form-background input[type="file"] {
+  border-radius: 12px;
+  border: 1px solid #ccc;
+  padding: 10px 14px;
+  font-size: 1rem;
+  transition: border-color 0.3s ease;
+}
+
+.form-background input[type="text"]:focus,
+.form-background textarea:focus,
+.form-background select:focus,
+.form-background input[type="file"]:focus {
+  border-color: #0d6efd;
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(13, 110, 253, 0.2);
+}
+
+.btn {
+  border-radius: 12px;
+  padding: 10px 16px;
+  font-weight: 500;
+  font-size: 1rem;
+}
+
+button.btn.bg-danger,
+button.btn.bg-primary {
+  color: #fff;
+  border: none;
+}
+
+button.btn.bg-danger:hover {
+  background-color: #c82333;
+}
+
+button.btn.bg-primary:hover {
+  background-color: #0056b3;
+}
+
+.c-light {
+  color: #f8f9fa !important;
+}
+
+.spinner-border {
+  margin-right: 8px;
+}

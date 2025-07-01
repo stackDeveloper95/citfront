@@ -8,18 +8,19 @@ import "./home.css"
 
 const Profile = () => {
   const { id } = useParams();
-  
+
   // Call the getByFileId query with fileId as a parameter
   const projects = useQuery(api.project.getByFileId, { fileId: id });
 
   return (
     <div id="home">
-      <Navbar />
       {projects ? (
         <ProfilePage projects={projects} />
       ) : (
         <div className="loading-text">
-          <p>Loading...</p>
+          <div class="spinner-border" role="status">
+            <span class="visually-hidden">Loading...</span>
+          </div>
         </div>
       )}
     </div>

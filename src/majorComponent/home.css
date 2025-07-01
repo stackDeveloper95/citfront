@@ -1,18 +1,3 @@
-#home {
-  background-image: url('../images/cit.jpg');
-  /* Replace with your image path */
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-attachment: fixed;
-  height: 100vh;
-  overflow-x: hidden;
-  overflow-y: hidden;
-
-
-
-}
-
 #cont {
   overflow-y: scroll;
   padding-bottom: 50px;
@@ -50,13 +35,7 @@
   /* Vertical center */
   left: 50%;
   /* Horizontal center */
-  transform: translate(-50%, -50%);
-  /* Properly center the text */
-  font-size: 2rem;
-  /* Larger text size */
-  font-weight: bold;
-  /* Bold text */
-  color: #007bff;
+   color: #007bff;
   /* Choose a color */
   text-align: center;
   /* Center align the text */
