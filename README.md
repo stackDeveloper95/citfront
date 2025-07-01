@@ -16,6 +16,8 @@ You may also see any lint errors in the console.
 
 ### this is the project pages 
 
+![Image](https://github.com/user-attachments/assets/6cf5bf98-7bed-4f24-9032-5fbf8a622a04)
+
 ![Image](https://github.com/user-attachments/assets/dd206531-8a2e-4ba8-90c4-b4a94c47702d)
 
 ![Image](https://github.com/user-attachments/assets/21e9b1bc-c571-44df-a113-05ecb50122df)
@@ -23,9 +25,6 @@ You may also see any lint errors in the console.
 ![Image](https://github.com/user-attachments/assets/e6e5264b-f1dd-484d-9c47-55c4d85fc78a)
 
 ![Image](https://github.com/user-attachments/assets/b1237f56-6aca-4b3c-870f-53e9b9980898)
-
-![Image](https://github.com/user-attachments/assets/6cf5bf98-7bed-4f24-9032-5fbf8a622a04)
-### `npm test`
 
 Launches the test runner in the interactive watch mode.\
 See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
