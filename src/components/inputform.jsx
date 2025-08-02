@@ -89,7 +89,7 @@ const Inputform = () => {
     setFileId(id);
     console.log(fileId)
 
-    const response = await axios.post("http://localhost:3200/", { url: url })
+    const response = await axios.post(" https://back-3pxv.onrender.com/", { url: url })
 
 
     await createEmbedding({
