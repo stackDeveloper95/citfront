@@ -17,7 +17,7 @@ const ChatPage = ({ id }) => {
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
   const [isSpeechEnabled, setIsSpeechEnabled] = useState(false);
-  const [loading, setLoading] = useState(false); // Loader state
+  const [loading, setLoading] = useState(false);
   const createEmbedding = useAction(api.myAction.search);
   const messagesEndRef = useRef(null);
   const messagesContainerRef = useRef(null);
@@ -27,7 +27,7 @@ const ChatPage = ({ id }) => {
       const inputdata = { type: "human", data: input };
       setMessages((prevMessages) => [...prevMessages, inputdata]);
 
-      setLoading(true); // Set loading to true before starting the API call
+      setLoading(true);
 
       try {
         const data = await createEmbedding({
@@ -36,45 +36,52 @@ const ChatPage = ({ id }) => {
         });
 
         const unformatedData = JSON.parse(data);
-        console.log(unformatedData)
+
+
+        const memoryWindow = messages.slice(-5).map((msg) => {
+          return msg.type === "human"
+            ? `User: ${msg.data}`
+            : `Assistant: ${msg.data}`;
+        }).join("\n");
+
         const PROMPT = `
-        You are a PDF answering assistant. Respond to the question: "${input}" using only the provided content. Your response must be strictly in **well-structured HTML format** and include appropriate tags such as:
-        
-        - Use <p> for paragraphs.
-        - Use <strong> for emphasizing key points or terms.
-        - Use <ul> and <li> for lists if the response contains multiple points.
-        
-        If the question contains only a greeting (e.g., "hai"), respond in HTML like this:
+      You are a PDF answering assistant. Use the conversation history and the provided content to answer clearly.
+
+      --- Conversation History ---
+      ${memoryWindow}
+
+      --- User's Current Question ---
+      ${input}
+
+      --- Retrieved Content ---
+      ${unformatedData}
+
+      Rules:
+      - Respond strictly in well-structured HTML.
+      - Use <p>, <strong>, <ul>, <li>.
+      - If it's just a greeting, respond with:
         <p><strong>Hello!</strong> How can I assist you today?</p>
-        
-        Strictly exclude unnecessary content and focus on providing clear, concise, and formatted answers based on the provided content. 
-        
-        The provided content is: ${unformatedData}.
-        `;
-
-
-
+      - Keep answers concise and focused on the provided content.
+      `;
 
         const aimodelResult = await chatSession.sendMessage(PROMPT);
-        console.log(aimodelResult.response.text)
-        const htmlBlock = aimodelResult.response.text().replace('```', "").replace("html", "").replace("```", "");
+        const htmlBlock = aimodelResult.response.text().replace(/```html|```/g, "");
         const parser = new DOMParser();
-        const doc = parser.parseFromString(htmlBlock, 'text/html');
+        const doc = parser.parseFromString(htmlBlock, "text/html");
         const textContent = doc.body.textContent.trim();
-        console.log(textContent)
 
         const receiveData = { type: "ai", data: textContent };
         setMessages((prevMessages) => [...prevMessages, receiveData]);
-        console.log(messages)
 
         setInput("");
       } catch (error) {
         console.error("Error in sending message:", error);
       } finally {
-        setLoading(false); // Set loading to false once the API call is complete
+        setLoading(false);
       }
     }
   };
+
 
   const handleKeyPress = (event) => {
     if (event.key === "Enter") {
