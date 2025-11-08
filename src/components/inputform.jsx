@@ -72,34 +72,59 @@ const Inputform = () => {
     return url;
   };
   const uploadFilepdf = async (file) => {
-    const postUrl2 = await generateUploadUrl();
-    const result = await fetch(postUrl2, {
-      method: 'POST',
-      headers: { 'Content-Type': file.type },
-      body: file,
-    });
+    try {
+      if (!file) {
+        enqueueSnackbar("No file selected!", { variant: "warning" });
+        return;
+      }
 
-    const storageId = await result.json();
-    // await sendImage({ storageId });
-    const url = await getUrl({
-      storageId: storageId.storageId
-    })
-    const id = uuidv4();
-    console.log(id)
-    setFileId(id);
-    console.log(fileId)
+      enqueueSnackbar("Uploading PDF, please wait...", { variant: "info" });
 
-    const response = await axios.post(" https://back-3pxv.onrender.com/", { url: url })
+      // 1️⃣ Generate upload URL
+      const postUrl2 = await generateUploadUrl();
+      if (!postUrl2) throw new Error("Failed to generate upload URL from Convex.");
 
+      // 2️⃣ Upload file to Convex storage
+      const result = await fetch(postUrl2, {
+        method: 'POST',
+        headers: { 'Content-Type': file.type },
+        body: file,
+      });
 
-    await createEmbedding({
-      texts: response.data.result,
-      metaData: id
-    })
+      if (!result.ok) throw new Error("Failed to upload file to Convex storage.");
 
-    enqueueSnackbar("pdf uploaded", { variant: "success" });
-    setPdfId(url);
+      const storageData = await result.json();
+      if (!storageData?.storageId) throw new Error("No storage ID returned after upload.");
+
+      // 3️⃣ Get public URL of the uploaded PDF
+      const url = await getUrl({ storageId: storageData.storageId });
+      if (!url) throw new Error("Failed to retrieve uploaded file URL.");
+
+      // 4️⃣ Create unique ID for file
+      const id = uuidv4();
+      setFileId(id);
+      console.log("📄 Generated File ID:", id);
+
+      // 5️⃣ Send the PDF URL to backend for text extraction
+      const response = await axios.post("https://back-3pxv.onrender.com/", { url });
+      if (!response?.data?.result) throw new Error("Failed to extract text from PDF via backend.");
+
+      // 6️⃣ Create embeddings using the extracted text
+      await createEmbedding({
+        texts: response.data.result,
+        metaData: id,
+      });
+
+      // 7️⃣ Mark as success
+      enqueueSnackbar("✅ PDF uploaded and embedded successfully!", { variant: "success" });
+      setPdfId(url);
+
+    } catch (err) {
+      console.error("❌ Error in uploadFilepdf:", err);
+      enqueueSnackbar(`Error: ${err.message || "Something went wrong during upload"}`, { variant: "error" });
+    }
   };
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();

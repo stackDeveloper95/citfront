@@ -46,15 +46,13 @@ export const ingest = action({
   handler: async (ctx,args) => {
     try {
       // Hardcoded data
-      const texts = ["Hello world", "Bye bye", "What's this?"];
-      const metadata = [{ prop: 2 }, { prop: 1 }, { prop: 3 }];
-      
+    
       // Ensure ConvexVectorStore.fromTexts is awaited
       await ConvexVectorStore.fromTexts(
         args.texts,
         {metadata:{fileId:args.metaData}},
         new GoogleGenerativeAIEmbeddings({
-          apiKey: "AIzaSyApcFS8Bdfas55ud50j-ulNTN0nO9-l1Kk",
+          apiKey: "AIzaSyAmxtPJQAFpky-yi51-cJiG7yGgj41NZRE",
           model: "text-embedding-004", // Ensure the embedding model's dimensions are correct
           taskType: TaskType.RETRIEVAL_DOCUMENT,
           title: "Document title",
@@ -81,7 +79,7 @@ export const search = action({
   },
   handler: async (ctx, args) => {
     const vectorStore = new ConvexVectorStore(new GoogleGenerativeAIEmbeddings({
-      apiKey: "AIzaSyApcFS8Bdfas55ud50j-ulNTN0nO9-l1Kk",
+      apiKey: "AIzaSyAmxtPJQAFpky-yi51-cJiG7yGgj41NZRE",
       model: "text-embedding-004",
       taskType: TaskType.RETRIEVAL_DOCUMENT,
       title: "Document title",
