@@ -1,8 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import Navbar from "../components/Navbar";
-import AutoAwesomeIcon from "@mui/icons-material/AutoAwesome";
 import SendIcon from "@mui/icons-material/Send";
-import Person4Icon from "@mui/icons-material/Person4";
 import { useParams } from "react-router-dom";
 import { useQuery, useAction } from "convex/react";
 import { api } from "../convex/_generated/api";
@@ -17,57 +15,19 @@ const ChatPage = ({ id }) => {
 
   const messagesEndRef = useRef(null);
 
-  const isGreeting = (text) => {
-    const greetings = [
-      "hi",
-      "hello",
-      "hey",
-      "hai",
-      "thanks",
-      "thank you",
-      "ok thank you",
-      "ok thanks",
-      "ok bye",
-      "bye",
-      "good morning",
-      "good evening",
-      "good afternoon"
-    ];
-
-    return greetings.some(greet =>
-      text.toLowerCase().trim().startsWith(greet)
-    );
-  };
-
   const handleSend = async () => {
     if (!input.trim()) return;
 
-    setMessages((prev) => [...prev, { type: "human", data: input }]);
+    const userMessage = input;
+
+    setMessages((prev) => [...prev, { type: "human", data: userMessage }]);
+    setInput("");
     setLoading(true);
-
-    // ✅ Handle greetings without RAG / Groq
-    if (isGreeting(input)) {
-      let reply = "Hello! 👋 How can I help you today?";
-
-      if (input.toLowerCase().includes("thank")) {
-        reply = "You're welcome 😊 Happy to help!";
-      } else if (input.toLowerCase().includes("bye")) {
-        reply = "Goodbye 👋 Have a great day!";
-      }
-
-      setTimeout(() => {
-        setMessages((prev) => [...prev, { type: "ai", data: reply }]);
-        setLoading(false);
-      }, 500);
-
-      setInput("");
-      return; // ⛔ stop here (important)
-    }
 
     try {
       // 🔍 Vector Search
       const data = await createEmbedding({
-        query: input,
+        query: userMessage,
         fileId: id,
       });
 
@@ -83,7 +43,7 @@ const ChatPage = ({ id }) => {
         .join("\n");
 
       const PROMPT = `
-You are a PDF answering assistant.
+You are a helpful PDF-based AI assistant.
 
 --- Conversation History ---
 ${memoryWindow}
@@ -91,14 +51,26 @@ ${memoryWindow}
 --- Retrieved Content ---
 ${retrievedChunks}
 
---- Question ---
-${input}
+--- User Message ---
+${userMessage}
 
 Rules:
-- Answer ONLY from retrieved content
-- Respond in valid HTML only
-- Use <p>, <strong>, <ul>, <li>
-- If not found, say "I don't know"
+1. If the user greets (hi, hello, hey, good morning, etc):
+   - Reply politely and ask how you can help.
+   - Do NOT use retrieved content.
+
+2. If the user says thanks or thank you:
+   - Reply politely like "You're welcome 😊"
+
+3. If the user says bye or goodbye:
+   - Reply politely and end the conversation.
+
+4. For normal questions:
+   - Answer ONLY using Retrieved Content.
+   - If answer is not found, say: "I don't know."
+
+5. Respond in VALID HTML only.
+6. Allowed tags: <p>, <strong>, <ul>, <li>
 `;
 
       const htmlResponse = await askGroq({ prompt: PROMPT });
@@ -108,65 +80,58 @@ Rules:
       const textContent = doc.body.textContent.trim();
 
       setMessages((prev) => [...prev, { type: "ai", data: textContent }]);
-      setInput("");
     } catch (err) {
       console.error(err);
+      setMessages((prev) => [
+        ...prev,
+        { type: "ai", data: "Something went wrong. Please try again." },
+      ]);
     } finally {
       setLoading(false);
     }
   };
-
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
   return (
-    <div className="container-fluid bg-dark text-light d-flex flex-column p-2 p-md-3"
-      style={{ height: "100vh" }}>
-
-      <h5 className="text-center mb-2 mb-md-3">
-        <AutoAwesomeIcon /> Chat with Project Assistant
-      </h5>
-
-      {/* Chat Messages */}
+    <div
+      className="d-flex flex-column"
+      style={{
+        height: "100vh",
+        backgroundColor: "#020617",
+        color: "#e5e7eb",
+        marginTop: "56px",
+      }}
+    >
+      {/* Messages */}
       <div
-        className="flex-grow-1 overflow-auto p-2 p-md-3 mb-2"
-        style={{
-          backgroundColor: "#1e1f2b",
-          borderRadius: "10px"
-        }}
+        className="flex-grow-1 overflow-auto px-3 py-4"
+        style={{ backgroundColor: "#0f172a" }}
       >
         {messages.map((msg, i) => (
           <div
             key={i}
-            className={`d-flex mb-2 ${msg.type === "human"
+            className={`d-flex mb-4 ${msg.type === "human"
               ? "justify-content-end"
-              : "justify-content-start"}`}
+              : "justify-content-start"
+              }`}
           >
             <div
-              className="d-flex align-items-end"
-              style={{ maxWidth: "85%" }}
+              style={{
+                maxWidth: "75%",
+                padding: "12px 16px",
+                borderRadius: "12px",
+                backgroundColor:
+                  msg.type === "human" ? "#2563eb" : "#1e293b",
+                color: "#e5e7eb",
+                lineHeight: "1.6",
+                fontSize: "0.95rem",
+                whiteSpace: "pre-wrap",
+              }}
             >
-              <div
-                className={`rounded-circle d-flex align-items-center justify-content-center
-                ${msg.type === "human" ? "bg-primary" : "bg-secondary"}
-                text-light me-2`}
-                style={{ width: 30, height: 30 }}
-              >
-                {msg.type === "human" ? <Person4Icon /> : <AutoAwesomeIcon />}
-              </div>
-
-              <div
-                className={`p-2 px-3 rounded shadow-sm
-                ${msg.type === "human" ? "bg-primary" : "bg-secondary"}`}
-                style={{
-                  wordBreak: "break-word",
-                  fontSize: "0.95rem"
-                }}
-              >
-                {msg.data}
-              </div>
+              {msg.data}
             </div>
           </div>
         ))}
@@ -174,37 +139,54 @@ Rules:
       </div>
 
       {/* Input */}
-      <div className="d-flex align-items-center border rounded-pill p-2">
-        <input
-          className="form-control bg-dark text-light border-0"
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-          placeholder="Ask something..."
-          disabled={loading}
-          onKeyDown={(e) => e.key === "Enter" && handleSend()}
-        />
-
-        <button
-          className="btn btn-primary rounded-circle ms-2"
-          onClick={handleSend}
-          disabled={loading}
-          style={{ width: 40, height: 40 }}
+      <div
+        className="border-top px-3 py-3"
+        style={{
+          backgroundColor: "#020617",
+          position: "sticky",
+          bottom: 0,
+        }}
+      >
+        <div
+          className="d-flex align-items-center rounded-pill px-3 py-2"
+          style={{
+            backgroundColor: "#0f172a",
+            border: "1px solid #1e293b",
+          }}
         >
-          <SendIcon fontSize="small" />
-        </button>
-      </div>
+          <input
+            className="form-control bg-transparent text-light border-0"
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            placeholder="Send a message..."
+            disabled={loading}
+            onKeyDown={(e) => e.key === "Enter" && handleSend()}
+            style={{ boxShadow: "none" }}
+          />
 
-      {loading && (
-        <p className="text-muted text-center mt-1">Thinking...</p>
-      )}
+          <button
+            onClick={handleSend}
+            disabled={loading}
+            className="btn text-light"
+          >
+            <SendIcon />
+          </button>
+        </div>
+
+        {loading && (
+          <p className="text-muted text-center mt-2">
+            Assistant is typing…
+          </p>
+        )}
+      </div>
     </div>
   );
-
 };
 
 const Chat = () => {
   const { id } = useParams();
   const projects = useQuery(api.project.getByFileId, { fileId: id });
+
   if (!projects?.length) return null;
 
   return (
