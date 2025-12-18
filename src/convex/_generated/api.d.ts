@@ -13,6 +13,7 @@ import type {
   FilterApi,
   FunctionReference,
 } from "convex/server";
+import type * as groq from "../groq.js";
 import type * as langchain_db from "../langchain/db.js";
 import type * as messages from "../messages.js";
 import type * as myAction from "../myAction.js";
@@ -27,6 +28,7 @@ import type * as project from "../project.js";
  * ```
  */
 declare const fullApi: ApiFromModules<{
+  groq: typeof groq;
   "langchain/db": typeof langchain_db;
   messages: typeof messages;
   myAction: typeof myAction;

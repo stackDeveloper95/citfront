@@ -1,128 +1,171 @@
-import React, { useState, useRef, useEffect } from "react"; // Add styling here or use inline styles
+import React, { useState, useRef, useEffect } from "react";
 import Navbar from "../components/Navbar";
-import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
-import VolumeMuteIcon from '@mui/icons-material/VolumeMute';
-import VolumeUpIcon from '@mui/icons-material/VolumeUp';
+import AutoAwesomeIcon from "@mui/icons-material/AutoAwesome";
+import SendIcon from "@mui/icons-material/Send";
+import Person4Icon from "@mui/icons-material/Person4";
 import { useParams } from "react-router-dom";
-import { useQuery } from "convex/react";
+import { useQuery, useAction } from "convex/react";
 import { api } from "../convex/_generated/api";
-import { useAction } from "convex/react";
-import { chatSession } from "../googleai";
-import SendIcon from '@mui/icons-material/Send';
-import Person4Icon from '@mui/icons-material/Person4';
-
-
 
 const ChatPage = ({ id }) => {
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
-  const [isSpeechEnabled, setIsSpeechEnabled] = useState(false);
   const [loading, setLoading] = useState(false);
+
   const createEmbedding = useAction(api.myAction.search);
+  const askGroq = useAction(api.groq.askGroq);
+
   const messagesEndRef = useRef(null);
-  const messagesContainerRef = useRef(null);
+
+  const isGreeting = (text) => {
+    const greetings = [
+      "hi",
+      "hello",
+      "hey",
+      "hai",
+      "thanks",
+      "thank you",
+      "ok thank you",
+      "ok thanks",
+      "ok bye",
+      "bye",
+      "good morning",
+      "good evening",
+      "good afternoon"
+    ];
+
+    return greetings.some(greet =>
+      text.toLowerCase().trim().startsWith(greet)
+    );
+  };
 
   const handleSend = async () => {
-    if (input.trim()) {
-      const inputdata = { type: "human", data: input };
-      setMessages((prevMessages) => [...prevMessages, inputdata]);
+    if (!input.trim()) return;
 
-      setLoading(true);
+    setMessages((prev) => [...prev, { type: "human", data: input }]);
+    setLoading(true);
 
-      try {
-        const data = await createEmbedding({
-          query: input,
-          fileId: id,
-        });
+    // ✅ Handle greetings without RAG / Groq
+    if (isGreeting(input)) {
+      let reply = "Hello! 👋 How can I help you today?";
 
-        const unformatedData = JSON.parse(data);
-
-
-        const memoryWindow = messages.slice(-5).map((msg) => {
-          return msg.type === "human"
-            ? `User: ${msg.data}`
-            : `Assistant: ${msg.data}`;
-        }).join("\n");
-
-        const PROMPT = `
-      You are a PDF answering assistant. Use the conversation history and the provided content to answer clearly.
-
-      --- Conversation History ---
-      ${memoryWindow}
-
-      --- User's Current Question ---
-      ${input}
-
-      --- Retrieved Content ---
-      ${unformatedData}
-
-      Rules:
-      - Respond strictly in well-structured HTML.
-      - Use <p>, <strong>, <ul>, <li>.
-      - If it's just a greeting, respond with:
-        <p><strong>Hello!</strong> How can I assist you today?</p>
-      - Keep answers concise and focused on the provided content.
-      `;
-
-        const aimodelResult = await chatSession.sendMessage(PROMPT);
-        const htmlBlock = aimodelResult.response.text().replace(/```html|```/g, "");
-        const parser = new DOMParser();
-        const doc = parser.parseFromString(htmlBlock, "text/html");
-        const textContent = doc.body.textContent.trim();
-
-        const receiveData = { type: "ai", data: textContent };
-        setMessages((prevMessages) => [...prevMessages, receiveData]);
-
-        setInput("");
-      } catch (error) {
-        console.error("Error in sending message:", error);
-      } finally {
-        setLoading(false);
+      if (input.toLowerCase().includes("thank")) {
+        reply = "You're welcome 😊 Happy to help!";
+      } else if (input.toLowerCase().includes("bye")) {
+        reply = "Goodbye 👋 Have a great day!";
       }
+
+      setTimeout(() => {
+        setMessages((prev) => [...prev, { type: "ai", data: reply }]);
+        setLoading(false);
+      }, 500);
+
+      setInput("");
+      return; // ⛔ stop here (important)
+    }
+
+    try {
+      // 🔍 Vector Search
+      const data = await createEmbedding({
+        query: input,
+        fileId: id,
+      });
+
+      const retrievedChunks = JSON.parse(data);
+
+      const memoryWindow = messages
+        .slice(-5)
+        .map((m) =>
+          m.type === "human"
+            ? `User: ${m.data}`
+            : `Assistant: ${m.data}`
+        )
+        .join("\n");
+
+      const PROMPT = `
+You are a PDF answering assistant.
+
+--- Conversation History ---
+${memoryWindow}
+
+--- Retrieved Content ---
+${retrievedChunks}
+
+--- Question ---
+${input}
+
+Rules:
+- Answer ONLY from retrieved content
+- Respond in valid HTML only
+- Use <p>, <strong>, <ul>, <li>
+- If not found, say "I don't know"
+`;
+
+      const htmlResponse = await askGroq({ prompt: PROMPT });
+
+      const parser = new DOMParser();
+      const doc = parser.parseFromString(htmlResponse, "text/html");
+      const textContent = doc.body.textContent.trim();
+
+      setMessages((prev) => [...prev, { type: "ai", data: textContent }]);
+      setInput("");
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setLoading(false);
     }
   };
 
-
-  const handleKeyPress = (event) => {
-    if (event.key === "Enter") {
-      handleSend();
-    }
-  };
-
-  const onClickSpeech = (text) => {
-    setIsSpeechEnabled(!isSpeechEnabled);
-    if (isSpeechEnabled) {
-      const utterance = new SpeechSynthesisUtterance(text);
-      speechSynthesis.speak(utterance);
-    } else {
-      speechSynthesis.cancel();
-    }
-  };
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
   return (
-    <div className="container-fluid bg-dark text-light   d-flex flex-column p-3">
-      <h4 className="text-center text-light mb-3"><AutoAwesomeIcon />   Chat with Project Assistant</h4>
+    <div className="container-fluid bg-dark text-light d-flex flex-column p-2 p-md-3"
+      style={{ height: "100vh" }}>
 
+      <h5 className="text-center mb-2 mb-md-3">
+        <AutoAwesomeIcon /> Chat with Project Assistant
+      </h5>
+
+      {/* Chat Messages */}
       <div
-        className=" overflow-auto p-3 mb-3 "
-        ref={messagesContainerRef}
-        style={{ borderRadius: "10px", height: "620px", backgroundColor: "#1e1f2b" }}
+        className="flex-grow-1 overflow-auto p-2 p-md-3 mb-2"
+        style={{
+          backgroundColor: "#1e1f2b",
+          borderRadius: "10px"
+        }}
       >
-        {messages.map((msg, index) => (
-          <div key={index} className={`d-flex mb-3 ${msg.type === 'human' ? 'justify-content-end' : 'justify-content-start'}`}>
-            <div className={`d-flex ${msg.type === 'human' ? 'flex-row-reverse' : 'flex-row'} align-items-end`}>
-              <div className="rounded-circle bg-primary text-dark fw-bold d-flex align-items-center justify-content-center me-2 ms-2 border bordar-light" style={{ width: "26px", height: "26px" }}>
-                {msg.type === 'human' ? <Person4Icon /> : <AutoAwesomeIcon />}
+        {messages.map((msg, i) => (
+          <div
+            key={i}
+            className={`d-flex mb-2 ${msg.type === "human"
+              ? "justify-content-end"
+              : "justify-content-start"}`}
+          >
+            <div
+              className="d-flex align-items-end"
+              style={{ maxWidth: "85%" }}
+            >
+              <div
+                className={`rounded-circle d-flex align-items-center justify-content-center
+                ${msg.type === "human" ? "bg-primary" : "bg-secondary"}
+                text-light me-2`}
+                style={{ width: 30, height: 30 }}
+              >
+                {msg.type === "human" ? <Person4Icon /> : <AutoAwesomeIcon />}
               </div>
-              <div className={`p-2 px-3 rounded shadow-sm ${msg.type === 'human' ? 'bg-primary text-light' : 'bg-secondary text-light'}`}>
-                <div>{msg.data}</div>
-                <div className="text-muted small text-end mt-1" style={{ fontSize: "0.75rem" }}>
-                  {new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-                </div>
+
+              <div
+                className={`p-2 px-3 rounded shadow-sm
+                ${msg.type === "human" ? "bg-primary" : "bg-secondary"}`}
+                style={{
+                  wordBreak: "break-word",
+                  fontSize: "0.95rem"
+                }}
+              >
+                {msg.data}
               </div>
             </div>
           </div>
@@ -130,58 +173,45 @@ const ChatPage = ({ id }) => {
         <div ref={messagesEndRef} />
       </div>
 
-      <div className="d-flex align-items-center border border-light rounded-pill p-2">
+      {/* Input */}
+      <div className="d-flex align-items-center border rounded-pill p-2">
         <input
-          type="text"
-          className="form-control bg-dark border-0 text-light me-2"
-          placeholder="Type your message..."
+          className="form-control bg-dark text-light border-0"
           value={input}
           onChange={(e) => setInput(e.target.value)}
-          onKeyPress={handleKeyPress}
+          placeholder="Ask something..."
           disabled={loading}
+          onKeyDown={(e) => e.key === "Enter" && handleSend()}
         />
-        <button className="btn btn-primary rounded-circle" onClick={handleSend} disabled={loading}>
-          <i className="bi bi-send"> <SendIcon /></i>
+
+        <button
+          className="btn btn-primary rounded-circle ms-2"
+          onClick={handleSend}
+          disabled={loading}
+          style={{ width: 40, height: 40 }}
+        >
+          <SendIcon fontSize="small" />
         </button>
       </div>
 
       {loading && (
-        <div className="text-center text-muted small mt-2">Loading...</div>
+        <p className="text-muted text-center mt-1">Thinking...</p>
       )}
     </div>
-
   );
+
 };
-
-
-
-const PdfViewer = ({ url }) => (
-  <iframe
-    src={url}
-    title="PDF Viewer"
-    style={{ width: "100%", height: "100%", border: "none" }}
-  />
-);
 
 const Chat = () => {
   const { id } = useParams();
   const projects = useQuery(api.project.getByFileId, { fileId: id });
-  const project = projects[0];
+  if (!projects?.length) return null;
 
   return (
     <>
       <Navbar />
-      <div style={{ marginTop: "50px", height: "400px" }} className="app-container bg-dark text-light vh-100 d-flex justify-content-center align-items-center">
-        <div className="container">
-          <div className="row justify-content-center">
-            <div style={{ height: "750px" }} className=" col-12 col-md-10 col-lg-8 col-xl-6 ">
-              <ChatPage id={project.fileId} />
-            </div>
-          </div>
-        </div>
-      </div>
+      <ChatPage id={projects[0].fileId} />
     </>
-
   );
 };
 
