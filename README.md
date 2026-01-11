@@ -1,80 +1,284 @@
-# Getting Started with Create React App
+# 🎓 Project Sharing & RAG-Based Chat Application
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This project was bootstrapped with **Create React App**.
 
-## Available Scripts
+A platform where **seniors and juniors can upload their project images and documents** (main & mini projects), and a **RAG-based chat system** helps users interact with and learn from **previous year projects**.
+
+---
+
+## 🚀 Project Overview
+
+This application allows:
+
+- 👨‍🎓 **Seniors** to upload:
+  - Project images
+  - Project documentation
+  - Main & mini projects
+- 👩‍🎓 **Juniors** to:
+  - View previous year projects
+  - Learn from real project examples
+  - Chat with a **RAG-based AI system** for guidance
+- 🤖 **RAG-Based Chat System**
+  - Users can ask questions about uploaded projects
+  - AI retrieves relevant project data
+  - Provides accurate, contextual answers
+
+---
+
+## 🧠 Key Features
+
+- 📂 Project image upload
+- 📄 Documentation upload
+- 🔍 Easy project browsing
+- 🤖 Retrieval-Augmented Generation (RAG) chat
+- 👥 Senior–Junior knowledge sharing
+- 💬 AI-powered previous year project assistance
+
+---
+
+## 🖼️ Application Pages Preview
+
+### 🔹 Home / Dashboard
+![Home Page](https://github.com/user-attachments/assets/6cf5bf98-7bed-4f24-9032-5fbf8a622a04)
+
+---
+
+### 🔹 Project Upload Page
+![Upload Page](https://github.com/user-attachments/assets/dd206531-8a2e-4ba8-90c4-b4a94c47702d)
+
+---
+
+### 🔹 Project Listing Page
+![Projects Page](https://github.com/user-attachments/assets/21e9b1bc-c571-44df-a113-05ecb50122df)
+
+---
+
+### 🔹 RAG-Based Chat System
+![Chat System](https://github.com/user-attachments/assets/e6e5264b-f1dd-484d-9c47-55c4d85fc78a)
+
+---
+
+### 🔹 Project Details / Documentation View
+![Project Details](https://github.com/user-attachments/assets/b1237f56-6aca-4b3c-870f-53e9b9980898)
+
+---
+
+## 🛠️ Available Scripts
 
 In the project directory, you can run:
 
 ### `npm start`
 
-Runs the app in the development mode.\
+Runs the app in development mode.  
 Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+The page reloads on changes and shows lint errors in the console.
 
-### this is the project pages 
+---
 
-![Image](https://github.com/user-attachments/assets/6cf5bf98-7bed-4f24-9032-5fbf8a622a04)
+### `npm run test`
 
-![Image](https://github.com/user-attachments/assets/dd206531-8a2e-4ba8-90c4-b4a94c47702d)
+Launches the test runner in interactive watch mode.  
+See: https://facebook.github.io/create-react-app/docs/running-tests
 
-![Image](https://github.com/user-attachments/assets/21e9b1bc-c571-44df-a113-05ecb50122df)
-
-![Image](https://github.com/user-attachments/assets/e6e5264b-f1dd-484d-9c47-55c4d85fc78a)
-
-![Image](https://github.com/user-attachments/assets/b1237f56-6aca-4b3c-870f-53e9b9980898)
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+---
 
 ### `npm run build`
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Builds the app for production to the `build` folder.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+- Optimized for best performance
+- Minified files
+- Ready for deployment
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+See: https://facebook.github.io/create-react-app/docs/deployment
+
+---
 
 ### `npm run eject`
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+⚠️ **One-way operation**
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+Copies all configuration files (Webpack, Babel, ESLint) into the project so you can fully customize it.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+You don’t need to eject for most projects.
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+---
 
-## Learn More
+## 🧰 Tech Stack
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+- ⚛️ React (Create React App)
+- 🟨 JavaScript
+- 🎨 CSS
+- 🤖 RAG-based AI Chat System
+- 📁 File & Image Upload
+- 🌐 REST APIs
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+---
 
-### Code Splitting
+## 🎯 Use Case
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+This platform is especially useful for:
+- College students
+- Final-year project references
+- Knowledge sharing between batches
+- AI-assisted project understanding
 
-### Analyzing the Bundle Size
+---
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+## 📚 Learn More
 
-### Making a Progressive Web App
+- CRA Docs: https://facebook.github.io/create-react-app/docs/getting-started  
+- React Docs: https://reactjs.org/
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+---
 
-### Advanced Configuration
+## ⭐ Support
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+If you find this project helpful, please give it a ⭐ on GitHub.
 
-### Deployment
+---
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+### ❤️ Built with passion to help students learn better
+# 🎓 Project Sharing & RAG-Based Chat Application
 
-### `npm run build` fails to minify
+This project was bootstrapped with **Create React App**.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+A platform where **seniors and juniors can upload their project images and documents** (main & mini projects), and a **RAG-based chat system** helps users interact with and learn from **previous year projects**.
+
+---
+
+## 🚀 Project Overview
+
+This application allows:
+
+- 👨‍🎓 **Seniors** to upload:
+  - Project images
+  - Project documentation
+  - Main & mini projects
+- 👩‍🎓 **Juniors** to:
+  - View previous year projects
+  - Learn from real project examples
+  - Chat with a **RAG-based AI system** for guidance
+- 🤖 **RAG-Based Chat System**
+  - Users can ask questions about uploaded projects
+  - AI retrieves relevant project data
+  - Provides accurate, contextual answers
+
+---
+
+## 🧠 Key Features
+
+- 📂 Project image upload
+- 📄 Documentation upload
+- 🔍 Easy project browsing
+- 🤖 Retrieval-Augmented Generation (RAG) chat
+- 👥 Senior–Junior knowledge sharing
+- 💬 AI-powered previous year project assistance
+
+---
+
+## 🖼️ Application Pages Preview
+
+### 🔹 Home / Dashboard
+![Home Page](https://github.com/user-attachments/assets/6cf5bf98-7bed-4f24-9032-5fbf8a622a04)
+
+---
+
+### 🔹 Project Upload Page
+![Upload Page](https://github.com/user-attachments/assets/dd206531-8a2e-4ba8-90c4-b4a94c47702d)
+
+---
+
+### 🔹 Project Listing Page
+![Projects Page](https://github.com/user-attachments/assets/21e9b1bc-c571-44df-a113-05ecb50122df)
+
+---
+
+### 🔹 RAG-Based Chat System
+![Chat System](https://github.com/user-attachments/assets/e6e5264b-f1dd-484d-9c47-55c4d85fc78a)
+
+---
+
+### 🔹 Project Details / Documentation View
+![Project Details](https://github.com/user-attachments/assets/b1237f56-6aca-4b3c-870f-53e9b9980898)
+
+---
+
+## 🛠️ Available Scripts
+
+In the project directory, you can run:
+
+### `npm start`
+
+Runs the app in development mode.  
+Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+
+The page reloads on changes and shows lint errors in the console.
+
+---
+
+### `npm run test`
+
+Launches the test runner in interactive watch mode.  
+See: https://facebook.github.io/create-react-app/docs/running-tests
+
+---
+
+### `npm run build`
+
+Builds the app for production to the `build` folder.
+
+- Optimized for best performance
+- Minified files
+- Ready for deployment
+
+See: https://facebook.github.io/create-react-app/docs/deployment
+
+---
+
+### `npm run eject`
+
+⚠️ **One-way operation**
+
+Copies all configuration files (Webpack, Babel, ESLint) into the project so you can fully customize it.
+
+You don’t need to eject for most projects.
+
+---
+
+## 🧰 Tech Stack
+
+- ⚛️ React (Create React App)
+- 🟨 JavaScript
+- 🎨 CSS
+- 🤖 RAG-based AI Chat System
+- 📁 File & Image Upload
+- 🌐 REST APIs
+
+---
+
+## 🎯 Use Case
+
+This platform is especially useful for:
+- College students
+- Final-year project references
+- Knowledge sharing between batches
+- AI-assisted project understanding
+
+---
+
+## 📚 Learn More
+
+- CRA Docs: https://facebook.github.io/create-react-app/docs/getting-started  
+- React Docs: https://reactjs.org/
+
+---
+
+## ⭐ Support
+
+If you find this project helpful, please give it a ⭐ on GitHub.
+
+---
+
+### ❤️ Built with passion to help students learn better
