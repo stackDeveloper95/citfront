@@ -4,6 +4,7 @@ import SendIcon from "@mui/icons-material/Send";
 import { useParams } from "react-router-dom";
 import { useQuery, useAction } from "convex/react";
 import { api } from "../convex/_generated/api";
+import "./chat.css";
 
 const ChatPage = ({ id }) => {
   const [messages, setMessages] = useState([]);
@@ -15,12 +16,20 @@ const ChatPage = ({ id }) => {
 
   const messagesEndRef = useRef(null);
 
+  const samplePrompts = [
+    "Give me a 3-bullet summary",
+    "List the key decisions mentioned",
+    "What are the next steps?",
+    "Extract dates and owners",
+  ];
+
   const handleSend = async () => {
-    if (!input.trim()) return;
+    if (loading || !input.trim()) return;
 
-    const userMessage = input;
+    const userMessage = input.trim();
+    const nextMessages = [...messages, { type: "human", data: userMessage }];
 
-    setMessages((prev) => [...prev, { type: "human", data: userMessage }]);
+    setMessages(nextMessages);
     setInput("");
     setLoading(true);
 
@@ -33,7 +42,7 @@ const ChatPage = ({ id }) => {
 
       const retrievedChunks = JSON.parse(data);
 
-      const memoryWindow = messages
+      const memoryWindow = nextMessages
         .slice(-5)
         .map((m) =>
           m.type === "human"
@@ -96,88 +105,90 @@ Rules:
   }, [messages]);
 
   return (
-    <div
-      className="d-flex flex-column"
-      style={{
-        height: "100vh",
-        backgroundColor: "#020617",
-        color: "#e5e7eb",
-        marginTop: "56px",
-      }}
-    >
-      {/* Messages */}
-      <div
-        className="flex-grow-1 overflow-auto px-3 py-4"
-        style={{ backgroundColor: "#0f172a" }}
-      >
-        {messages.map((msg, i) => (
-          <div
-            key={i}
-            className={`d-flex mb-4 ${msg.type === "human"
-              ? "justify-content-end"
-              : "justify-content-start"
-              }`}
-          >
-            <div
-              style={{
-                maxWidth: "75%",
-                padding: "12px 16px",
-                borderRadius: "12px",
-                backgroundColor:
-                  msg.type === "human" ? "#2563eb" : "#1e293b",
-                color: "#e5e7eb",
-                lineHeight: "1.6",
-                fontSize: "0.95rem",
-                whiteSpace: "pre-wrap",
-              }}
-            >
-              {msg.data}
-            </div>
+    <div className="chat-page">
+      <div className="chat-glow" />
+
+      <div className="chat-shell">
+        <div className="chat-header">
+          <div>
+            <p className="eyebrow">PDF Copilot</p>
+            <h1>Chat with your document</h1>
+            <p className="lede">
+              Ask focused questions and get answers grounded in the file.
+            </p>
           </div>
-        ))}
-        <div ref={messagesEndRef} />
-      </div>
-
-      {/* Input */}
-      <div
-        className="border-top px-3 py-3"
-        style={{
-          backgroundColor: "#020617",
-          position: "sticky",
-          bottom: 0,
-        }}
-      >
-        <div
-          className="d-flex align-items-center rounded-pill px-3 py-2"
-          style={{
-            backgroundColor: "#0f172a",
-            border: "1px solid #1e293b",
-          }}
-        >
-          <input
-            className="form-control bg-transparent text-light border-0"
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            placeholder="Send a message..."
-            disabled={loading}
-            onKeyDown={(e) => e.key === "Enter" && handleSend()}
-            style={{ boxShadow: "none" }}
-          />
-
-          <button
-            onClick={handleSend}
-            disabled={loading}
-            className="btn text-light"
-          >
-            <SendIcon />
-          </button>
+          <div className={`status ${loading ? "pulse" : "ready"}`}>
+            <span className="dot" />
+            {loading ? "Thinking" : "Ready"}
+          </div>
         </div>
 
-        {loading && (
-          <p className="text-muted text-center mt-2">
-            Assistant is typing…
-          </p>
-        )}
+        <div className="chat-card">
+          <div className="chat-stream">
+            {messages.length === 0 && (
+              <div className="chat-empty">
+                <div>
+                  <p className="eyebrow">No messages yet</p>
+                  <h3>Start the conversation</h3>
+                  <p>
+                    I will pull answers from the uploaded PDF. Try one of
+                    these starters or ask your own.
+                  </p>
+                </div>
+
+                <div className="prompt-chips">
+                  {samplePrompts.map((prompt) => (
+                    <button
+                      key={prompt}
+                      onClick={() => setInput(prompt)}
+                      className="chip"
+                      disabled={loading}
+                    >
+                      {prompt}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {messages.map((msg, i) => (
+              <div key={i} className={`bubble ${msg.type}`}>
+                <div className="bubble-label">
+                  {msg.type === "human" ? "You" : "AI Assistant"}
+                </div>
+                <div className="bubble-body">{msg.data}</div>
+              </div>
+            ))}
+            <div ref={messagesEndRef} />
+          </div>
+
+          <div className="chat-input-row">
+            <input
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              placeholder="Ask about the PDF, hit Enter to send"
+              disabled={loading}
+              onKeyDown={(e) => e.key === "Enter" && handleSend()}
+            />
+            <button
+              onClick={handleSend}
+              disabled={loading || !input.trim()}
+              className="send-btn"
+              aria-label="Send message"
+            >
+              <SendIcon fontSize="small" />
+            </button>
+          </div>
+
+          {loading && (
+            <div className="typing">
+              <span />
+              <span />
+              <span />
+              <p>Pulling context from your file…</p>
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );

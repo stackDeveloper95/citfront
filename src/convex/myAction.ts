@@ -4,38 +4,7 @@ import { v } from "convex/values";
 import { GoogleGenerativeAIEmbeddings } from "@langchain/google-genai";
 import { TaskType } from "@google/generative-ai";
 
-// export const ingest = action({
-//   args: {
-//     textdata: v.array(v.string()), // Array of text strings
-//     fileId: v.string(),
-//   },
-//   handler: async (ctx, args) => {
-//     try {
-//       console.log("Text data received:", args.textdata);
-
-//       const metadata = args.textdata.map(() => ({ fileId: args.fileId }));
-
-//       // Ensure the ConvexVectorStore operation is awaited properly
-//       await ConvexVectorStore.fromTexts(
-//         args.textdata,
-//         metadata,
-//         new GoogleGenerativeAIEmbeddings({
-//           apiKey: "AIzaSyApcFS8Bdfas55ud50j-ulNTN0nO9-l1Kk",
-//           model: "text-embedding-004", // Check the embedding model's dimensions
-//           taskType: TaskType.RETRIEVAL_DOCUMENT,
-//           title: "Document title",
-//         }),
-//         { ctx }
-//       );
-
-//       console.log("Data successfully ingested.");
-//     } catch (error) {
-//       console.error("Error ingesting data:", error);
-//       throw new Error("Data ingestion failed.");
-//     }
-//   },
-// });
-
+const genaiKey = process.env.GOOGLE_GENAI_API_KEY;
 
 export const ingest = action({
   args:{
@@ -45,6 +14,9 @@ export const ingest = action({
   },
   handler: async (ctx,args) => {
     try {
+      if (!genaiKey) {
+        throw new Error("Missing GOOGLE_GENAI_API_KEY in environment");
+      }
       // Hardcoded data
     
       // Ensure ConvexVectorStore.fromTexts is awaited
@@ -52,7 +24,7 @@ export const ingest = action({
         args.texts,
         {metadata:{fileId:args.metaData}},
         new GoogleGenerativeAIEmbeddings({
-          apiKey: "AIzaSyAmxtPJQAFpky-yi51-cJiG7yGgj41NZRE",
+          apiKey: genaiKey,
           model: "text-embedding-004", // Ensure the embedding model's dimensions are correct
           taskType: TaskType.RETRIEVAL_DOCUMENT,
           title: "Document title",
@@ -78,8 +50,11 @@ export const search = action({
     fileId: v.string(),
   },
   handler: async (ctx, args) => {
+    if (!genaiKey) {
+      throw new Error("Missing GOOGLE_GENAI_API_KEY in environment");
+    }
     const vectorStore = new ConvexVectorStore(new GoogleGenerativeAIEmbeddings({
-      apiKey: "AIzaSyAmxtPJQAFpky-yi51-cJiG7yGgj41NZRE",
+      apiKey: genaiKey,
       model: "text-embedding-004",
       taskType: TaskType.RETRIEVAL_DOCUMENT,
       title: "Document title",

@@ -1,136 +1,136 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import Navbar from '../components/Navbar';
-import search from "../images/search.webp";
-import chat from "../images/chat.png";
-import submit from "../images/submit.jpg"
 import Footer from '../components/Footer';
-import "./homePage.css"
+import "./homePage.css";
 import { Link } from "react-router-dom";
-import { useEffect } from 'react';
+
+const features = [
+  {
+    title: 'Upload and spotlight',
+    copy: 'Drop in your project, enrich it with a cover image, and ship it in seconds.',
+    action: 'Upload now',
+    to: '/upload'
+  },
+  {
+    title: 'Explore the library',
+    copy: 'Browse hand-curated student builds across departments with beautiful previews.',
+    action: 'Browse projects',
+    to: '/project'
+  },
+  {
+    title: 'Chat with PDFs',
+    copy: 'Ask questions against any uploaded PDF and get concise answers powered by retrieval.',
+    action: 'Start a chat',
+    to: '/project'
+  }
+];
+
+const steps = [
+  {
+    label: 'Upload',
+    detail: 'Add your PDF and hero image. We create a unique ID and prep your file for chat.',
+  },
+  {
+    label: 'Embed',
+    detail: 'We extract text, build embeddings, and ready your project for search.',
+  },
+  {
+    label: 'Ask',
+    detail: 'Share the profile or open a chat to get instant, sourced answers.',
+  },
+];
 
 function HomePage() {
-  const [ligCol, setLigCol] = useState(false);
+  const [pulse, setPulse] = useState(false);
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      setLigCol((prevLigCol) => !prevLigCol); // Use functional update to toggle based on previous state
-    }, 500); // 0.5 seconds = 500 milliseconds
-
-    // Cleanup on unmount
+    const interval = setInterval(() => setPulse((prev) => !prev), 900);
     return () => clearInterval(interval);
   }, []);
+
   return (
-    <>
-      <div id="home" class="user-select-none">
-        <div className="bg-dark text-white min-vh-100 d-flex flex-column justify-content-center align-items-center p-4 pt-5">
-          <div className="text-center mb-5 ">
-            <h1 className="text-shadow-darkblue display-4 fw-bold text-light pt-4">Welcome to <spam className={`text-${ligCol ? 'primary' : 'light'}`}>Project Hub</spam></h1>
-            <p className="lead text-secondary">
-              Your central place to showcase, discover, and manage your creative projects.
-              Get started by uploading your work or exploring projects from others.
-            </p>
-          </div>
+    <div id="home" className="page-shell">
+      <section className="hero-panel glass glow-border">
+        <div className="pill">Project Hub</div>
+        <h1 className="hero-title">
+          Launch, discover, and chat with your projects in one elegant home.
+          <span className={`hero-accent ${pulse ? 'is-on' : ''}`}> 100% focused on students.</span>
+        </h1>
+        <p className="hero-subtitle">
+          Showcase capstones and mini projects with cinematic previews, browse the community gallery,
+          and let teammates interrogate PDFs with AI-powered chat.
+        </p>
 
-          <div className="row gap-4 justify-content-center mb-5">
-            {/* Upload Card */}
-            <div className="card hover-grow bg-transparent border border-primary text-white col-12 col-sm-4 col-md-4 p-4 rounded">
-
-              <h5 className="card-title text-primary"> Upload Your Project</h5>
-              <p className="card-text text-primary">
-                Share your latest creation with the world. Provide details and links.
-              </p>
-              <Link to="/upload" className='nav-link text-light d-flex align-item-center justify-content-center' >
-
-                <button className="btn btn-outline-primary">Upload Now →</button></Link>
-            </div>
-
-            {/* Explore Card */}
-            <div className="card bg-transparent border border-primary hover-grow bg-primary text-white col-12 col-sm-4 col-md-4 p-4 rounded d-flex align-item-center justify-content-center">
-              <h5 className="card-title text-primary "> Explore Projects</h5>
-              <p className="card-text text-primary">
-                Discover interesting projects uploaded by others in the community.
-              </p>
-              <Link to="/project" className='nav-link text-light d-flex align-item-center justify-content-center'>
-                <button className="btn btn-outline-primary">View Projects →</button></Link>
-            </div>
-          </div>
-
-          {/* Info Box */}
-          <div className="card hover-grow bg-secondary text-white p-4 rounded text-center col-md-8">
-            <h5 className="card-title text-pink"> What is Project Hub?</h5>
-            <p className="card-text text-light">
-              A simple, elegant platform to manage and display your project portfolio. Whether you're a developer, designer, writer, or any kind of creator, Project Hub helps you organize your work and present it professionally.
-            </p>
-          </div>
+        <div className="cta-row">
+          <Link to="/upload" className="primary-btn">Upload your project</Link>
+          <Link to="/project" className="ghost-btn">Explore the gallery</Link>
         </div>
 
-        <footer className="bg-dark text-light py-4 mt-auto">
-          <div className="container text-center">
-            <p className="mb-1">Created with passion by <strong>Sanjai</strong> as part of my resume portfolio.</p>
-            <small>&copy; {new Date().getFullYear()} @sanjai.All rights reserved.</small>
+        <div className="hero-stats">
+          <div className="stat glass">
+            <span className="stat-number">Live</span>
+            <p className="stat-label">Embeddings ready per PDF</p>
           </div>
-        </footer>
+          <div className="stat glass">
+            <span className="stat-number">Multi</span>
+            <p className="stat-label">Department-ready layouts</p>
+          </div>
+          <div className="stat glass">
+            <span className="stat-number">AI</span>
+            <p className="stat-label">Chat against your uploads</p>
+          </div>
+        </div>
+      </section>
 
-      </div>
+      <section className="feature-grid">
+        {features.map((feature) => (
+          <div key={feature.title} className="feature-card glass">
+            <div className="feature-top">
+              <h3>{feature.title}</h3>
+              <p>{feature.copy}</p>
+            </div>
+            <Link to={feature.to} className="feature-link">
+              <span>{feature.action}</span>
+              <span className="feature-dot" />
+            </Link>
+          </div>
+        ))}
+      </section>
 
+      <section className="flow-panel glass">
+        <div>
+          <p className="pill">How it works</p>
+          <h2 className="section-title">From upload to AI answers in three steps.</h2>
+          <p className="section-subtitle">Bring your PDF once; share a searchable, chat-friendly profile forever.</p>
+        </div>
+        <div className="steps">
+          {steps.map((step) => (
+            <div key={step.label} className="step-card">
+              <div className="step-badge">{step.label}</div>
+              <p className="step-copy">{step.detail}</p>
+            </div>
+          ))}
+        </div>
+      </section>
 
-    </>
+      <section className="info-panel glass">
+        <div>
+          <h3 className="section-title">What is Project Hub?</h3>
+          <p className="section-subtitle">
+            A single destination to stage, browse, and interrogate student projects. Designed for fast showcase links,
+            searchable cards, and AI conversations tied directly to each PDF.
+          </p>
+        </div>
+        <div className="info-actions">
+          <Link to="/upload" className="primary-btn">Start with an upload</Link>
+          <Link to="/project" className="ghost-btn">See live examples</Link>
+        </div>
+      </section>
+
+      <Footer />
+    </div>
   );
 }
 
 export default HomePage;
-
-
-
-{/* <div id="cont" className='h-100 '>
-  <div className="container">
-    <header className="jumbotron my-4">
-      <h1 className="display-3">Welcome to Our Project Portal</h1>
-      <p className="lead">Explore the future with our AI-powered features.</p>
-      <a href="#features" className="btn btn-danger btn-lg">Learn More</a>
-    </header>
-
-    <div className="row text-center">
-      <div className="col-lg-4 col-md-6 mb-4">
-        <div className="card h-100">
-          <img className="card-img-top h-75" src={search} alt="Search Projects" />
-          <div className="card-body">
-            <h4 className="card-title">Search Projects</h4>
-            <p className="card-text">Search and download mini and major project details of ex-students.</p>
-          </div>
-          <div className="card-footer">
-            <Link className="btn btn-danger" to="/project">Find Out More!</Link>
-          </div>
-        </div>
-      </div>
-      <div className="col-lg-4 col-md-6 mb-4">
-        <div className="card h-100">
-          <img className="card-img-top h-75" src={chat} alt="AI Chat" />
-          <div className="card-body">
-            <h4 className="card-title">AI Chat</h4>
-            <p className="card-text">Chat with our AI to get details about projects and clarify your doubts.</p>
-          </div>
-          <div className="card-footer">
-            <Link className="btn btn-danger" to="/project">Find Out More!</Link>
-          </div>
-        </div>
-      </div>
-      <div className="col-lg-4 col-md-6 mb-4">
-        <div className="card h-100">
-          <img className="card-img-top h-75" src={submit} alt="Project Submission" />
-          <div className="card-body">
-            <h4 className="card-title">Project Submission</h4>
-            <p className="card-text">Submit your own projects and contribute to our growing repository.</p>
-          </div>
-          <div className="card-footer">
-            <Link className="btn btn-danger" to="/upload">Find Out More!</Link>
-          </div>
-        </div>
-      </div>
-    </div>
-
-  </div>
-  <Footer />
-</div> */}
 

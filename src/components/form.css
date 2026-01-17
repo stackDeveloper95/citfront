@@ -1,106 +1,65 @@
-@import url('https://fonts.googleapis.com/css2?family=Cal+Sans&family=Comic+Relief:wght@400;700&display=swap');
-
 #form {
   position: relative;
-  background: rgba(65, 62, 62, 0.1);
-  /* backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px); */
-  border-radius: 20px;
-  box-shadow: 0 8px 32px rgba(30, 27, 27, 0.2);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  color: transparent;
+  background: var(--panel);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow);
+  border: 1px solid var(--border);
+  color: var(--text);
   width: 100%;
-  max-width: 500px;
+  max-width: 620px;
   margin: auto;
   overflow: hidden;
-  font-family: "Comic Relief", system-ui;
-  font-weight: 700;
-  font-style: normal;
-
-  /* ensures droplets stay inside */
 }
 
-#form::before,
 #form::after {
   content: '';
   position: absolute;
-  border-radius: 50%;
-  background: #0a58ca;
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
+  inset: 1px;
+  border-radius: inherit;
+  background: linear-gradient(130deg, rgba(124, 58, 237, 0.2), rgba(34, 211, 238, 0.16));
+  filter: blur(30px);
   z-index: 0;
-  animation: float 10s infinite ease-in-out;
 }
 
-#form::before {
-  width: 200px;
-  height: 200px;
-  top: -80px;
-  left: -80px;
-}
-
-#form::after {
-  width: 200px;
-  height: 200px;
-  top: 100px;
-  left: 100px;
-}
-
-@keyframes float {
-
-  0%,
-  100% {
-    transform: translateY(0px) translateX(0px);
-    background: #0a58ca;
-    transition: 0.1s;
-  }
-
-  50% {
-    transform: translateY(20px) translateX(20px);
-    background: rgb(212, 194, 194);
-    transition: 0.1s;
-  }
-}
-
-/* Keep form elements above droplets */
 #form * {
   position: relative;
   z-index: 1;
 }
 
-.floating-label-group {
-  position: relative;
-  margin-bottom: 1.5rem;
+label,
+.form-label {
+  color: #d8def0;
+  font-weight: 600;
 }
 
-.floating-label-group input,
-.floating-label-group textarea,
-.floating-label-group select {
-  padding-top: 1.25rem;
-  background: transparent;
+.form-control,
+.form-select {
+  background: rgba(255, 255, 255, 0.04) !important;
+  border-color: var(--border) !important;
+  color: #f8f9ff !important;
+  border-radius: var(--radius-sm) !important;
+}
+
+.form-control:focus,
+.form-select:focus {
+  box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.2) !important;
+  border-color: #7c3aed !important;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #7c3aed, #22d3ee);
   border: none;
-  border-bottom: 1px solid white;
-  color: white;
-  width: 100%;
+  font-weight: 700;
 }
 
-.floating-label-group label {
-  position: absolute;
-  top: 10px;
-  left: 0;
-  font-size: 1rem;
-  color: #ccc;
-  pointer-events: none;
-  transition: all 0.2s ease;
+.btn-primary:disabled {
+  opacity: 0.75;
 }
 
-.floating-label-group input:focus+label,
-.floating-label-group input:not(:placeholder-shown)+label,
-.floating-label-group textarea:focus+label,
-.floating-label-group textarea:not(:placeholder-shown)+label,
-.floating-label-group select:focus+label,
-.floating-label-group select:valid+label {
-  top: -10px;
-  font-size: 0.85rem;
-  color: #fff;
+.upload-intro {
+  text-align: center;
+  margin: 0 auto 18px;
+  max-width: 780px;
 }

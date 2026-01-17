@@ -30,84 +30,58 @@ function ProjectPage() {
   };
 
   return (
-    <div id="pro" className="pt-5 mt-2">
-      <header className="my-4 d-flex flex-column justify-content-center align-items-center ">
-        <h1 className="display-3">Project Portal</h1>
-        <p className="lead">Search and explore projects from various departments.</p>
+    <div id="pro" className="page-shell">
+      <header className="projects-hero glass">
+        <div className="pill">Project Library</div>
+        <div className="projects-head">
+          <h1 className="section-title">Curated student builds, ready to explore.</h1>
+          <p className="section-subtitle">Search across departments, filter by type, and open a profile to chat with any PDF.</p>
+        </div>
+
+        <div className="filter-bar">
+          <div className="filter">
+            <label>Project name</label>
+            <input
+              type="text"
+              placeholder="E.g. Vision AI Lab"
+              value={projectName}
+              onChange={(e) => setProjectName(e.target.value)}
+            />
+          </div>
+
+          <div className="filter">
+            <label>Department</label>
+            <select
+              value={department}
+              onChange={(e) => setDepartment(e.target.value)}
+            >
+              <option value="">Any</option>
+              {departments.map((dept) => (
+                <option key={dept} value={dept}>{dept}</option>
+              ))}
+            </select>
+          </div>
+
+          <button className="primary-btn filter-cta" onClick={handleSearch}>Run search</button>
+        </div>
       </header>
 
-      <div className="row mb-4 d-flex justify-content-center">
-        <div className="col-6 col-md-4 pt-4 px-4">
-          <input
-            type="text"
-            className="form-control"
-            placeholder="Project Name"
-            value={projectName}
-            onChange={(e) => setProjectName(e.target.value)}
-          />
-        </div>
-        <div className="col-6 col-md-4 pt-4 px-4">
-          <select
-            className="form-control"
-            value={department}
-            onChange={(e) => setDepartment(e.target.value)}
-          >
-            <option value="">Select Department</option>
-            {departments.map((dept, index) => (
-              <option key={index} value={dept}>
-                {dept}
-              </option>
-            ))}
-          </select>
-        </div>
-        <div className="d-flex justify-content-center">
-          <button className="mt-3 col-md-2 btn btn-success" onClick={handleSearch}>
-            Search
-          </button>
-        </div>
-      </div>
-
-      <div className="row p-5">
+      <div className="project-grid">
         {projects.map((project, index) => (
-          <div id="mainProfile" className=" col-sm-6 col-md-4 col-lg-4 mb-4" key={index}>
-
-            <div className="">
-              <img
-                src={project.images}
-                alt={project.projectName}
-                className="card-img-top"
-                style={{
-                  objectFit: "cover",
-                  height: "250px",  // Fixed height for image
-                  width: "100%",
-                  borderRadius: "30px",
-                  zIndex: "0"  // Full width of the card
-                }}
-              />
-              <div id="profile" className="d-flex flex-column justify-content-center align-items-center border border-light 
-              opacity-75" style={{
-                  position: 'relative',
-                  top: "-250px",
-                  borderRadius: "30px",
-                  zIndex: "1",
-                  height: "250px",  // Fixed height for image
-                  width: "100%",
-                  userSelect: "none",
-                  opacity: "2px",
-
-                }} >
-                <h4 className="card-title text-dark">{project.projectName}</h4>
-                <p className="card-text text-dark">
-                  <strong>Department:</strong> {project.department}
-                </p>
-                <p className="card-text text-dark">
-                  <strong>Type:</strong> {project.type}
-                </p>
-                <Link className="btn btn-sm btn-outline-primary" to={`/profile/${project.fileId}`}>view profile</Link>
+          <div key={index} className="project-card glass">
+            <div className="project-media" style={{ backgroundImage: `url(${project.images})` }} />
+            <div className="project-body">
+              <div className="project-meta">
+                <span className="chip">{project.department}</span>
+                <span className="chip ghost">{project.type}</span>
+              </div>
+              <h4>{project.projectName}</h4>
+              <p className="project-desc">{project.desc || 'A tightly scoped student project.'}</p>
+              <div className="project-actions">
+                <Link className="ghost-btn" to={`/profile/${project.fileId}`}>Open profile</Link>
               </div>
             </div>
           </div>
-
         ))}
       </div>
     </div>

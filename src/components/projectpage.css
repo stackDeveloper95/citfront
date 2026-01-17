@@ -1,19 +1,117 @@
-#profile:hover {
-    background-color: transparent;
-    transition: 0.5s;
-
+.projects-hero {
+    border-radius: var(--radius-xl);
+    padding: 32px;
+    margin-bottom: 28px;
+    border: 1px solid var(--border);
 }
 
-.profile:hover img {
-    transform: scale(1.5);
-    /* or any effect you want */
-    transition: 0.5s;
+.projects-head {
+    margin-top: 10px;
 }
 
-#profile {
-    background-color: rgb(255, 255, 255);
+.filter-bar {
+    margin-top: 22px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 12px;
+    align-items: end;
 }
 
-#mainProfile {
-    height: 300px;
+.filter label {
+    display: block;
+    color: var(--muted);
+    margin-bottom: 6px;
+    font-weight: 600;
+    letter-spacing: 0.2px;
+}
+
+.filter input,
+.filter select {
+    width: 100%;
+    padding: 12px;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border);
+    background: rgba(255, 255, 255, 0.04);
+    color: #f8f9ff;
+}
+
+.filter-cta {
+    width: 100%;
+    justify-self: flex-start;
+    height: 100%;
+}
+
+.project-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 18px;
+}
+
+.project-card {
+    border-radius: var(--radius);
+    overflow: hidden;
+    border: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    min-height: 340px;
+}
+
+.project-media {
+    height: 170px;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.project-body {
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    flex: 1;
+}
+
+.project-meta {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.chip {
+    padding: 6px 10px;
+    border-radius: 999px;
+    background: rgba(34, 211, 238, 0.18);
+    color: #d7f9ff;
+    font-weight: 600;
+    font-size: 13px;
+}
+
+.chip.ghost {
+    background: rgba(255, 255, 255, 0.06);
+    color: #f8f9ff;
+    border: 1px solid var(--border);
+}
+
+.project-body h4 {
+    margin: 0;
+    color: #f8f9ff;
+    font-size: 18px;
+}
+
+.project-desc {
+    margin: 0;
+    color: var(--muted);
+    flex: 1;
+    font-size: 14px;
+}
+
+.project-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 6px;
+}
+
+.project-actions .ghost-btn {
+    padding: 10px 14px;
 }

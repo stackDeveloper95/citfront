@@ -1,21 +1,24 @@
 import { action } from "./_generated/server";
 import { v } from "convex/values";
 import fetch from "node-fetch";
-import  {GROQ_API_KEY} from "../groq"
 
+const apiKey = process.env.GROQ_API_KEY;
 
-// const GROQ_API_KEY="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"
 export const askGroq = action({
   args: {
     prompt: v.string(),
   },
   handler: async (_, { prompt }) => {
+    if (!apiKey) {
+      throw new Error("Missing GROQ_API_KEY in environment");
+    }
+
     const response = await fetch(
       "https://api.groq.com/openai/v1/chat/completions",
       {
         method: "POST",
         headers: {
-          "Authorization": `Bearer ${GROQ_API_KEY}`, 
+          "Authorization": `Bearer ${apiKey}`,
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
