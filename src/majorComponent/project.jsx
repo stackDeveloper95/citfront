@@ -1,7 +1,5 @@
-import React from 'react'
-import Navbar from '../components/Navbar'
-import Search from '../components/search'
-import ProjectPage from '../components/Projectpage'
+import React from 'react';
+import ProjectPage from '../components/Projectpage';
 
 const Project = () => {
   return (

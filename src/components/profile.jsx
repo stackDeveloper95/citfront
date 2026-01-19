@@ -1,6 +1,5 @@
 import React from "react";
 import "./profilepage.css";
-import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
 import { Link } from "react-router-dom";
 
 const ProfilePage = ({ projects }) => {

@@ -1,8 +1,6 @@
-import React from 'react'
-import Navbar from '../components/Navbar'
-import Search from '../components/search'
-import Inputform from '../components/inputform'
-import "./home.css"
+import React from 'react';
+import Inputform from '../components/inputform';
+import './home.css';
 
 const Upload = () => {
   return (
