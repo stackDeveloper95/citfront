@@ -7,8 +7,8 @@ import React, { useState } from 'react';
 
 export default function PdfProcessorByUrl() {
   const [url, setUrl] = useState('');
-  const [text, setText] = useState('');
-  const [summary, setSummary] = useState('');
+  const [text] = useState('');
+  const [summary] = useState('');
 
   const loadPdfFromUrl = async (pdfUrl) => {
     // const data=await fetch(pdfUrl);

@@ -21,10 +21,10 @@ function Footer() {
           </div>
           <div className="col-md-4">
             <h5>Follow Us</h5>
-            <a href="#" className="text-white mr-2"><FacebookIcon color= '#1877F2'/></a>
-            <a href="#" className="text-white mr-2"><TwitterIcon/></a>
-            <a href="#" className="text-white"><LinkedInIcon/></a>
-            <a href="#" className="text-white"><InstagramIcon/></a>
+            <a href="https://www.facebook.com" className="text-white mr-2" target="_blank" rel="noreferrer"><FacebookIcon color='#1877F2' /></a>
+            <a href="https://www.twitter.com" className="text-white mr-2" target="_blank" rel="noreferrer"><TwitterIcon /></a>
+            <a href="https://www.linkedin.com" className="text-white" target="_blank" rel="noreferrer"><LinkedInIcon /></a>
+            <a href="https://www.instagram.com" className="text-white" target="_blank" rel="noreferrer"><InstagramIcon /></a>
           </div>
         </div>
         <div className="row mt-3">

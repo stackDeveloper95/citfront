@@ -89,29 +89,3 @@ function ProjectPage() {
 }
 
 export default ProjectPage;
-
-
-{/* <div className="col-lg-4 col-md-6 mb-4" key={index}>
-  <div className="card h-100">
-    <img
-      src={project.images}
-      alt={project.projectName}
-      className="card-img-top"
-      style={{
-        objectFit: "cover",
-        height: "200px",  // Fixed height for image
-        width: "100%",    // Full width of the card
-      }}
-    />
-    <div className="card-body">
-      <h4 className="card-title">{project.projectName}</h4>
-      <p className="card-text">
-        <strong>Department:</strong> {project.department}
-      </p>
-      <p className="card-text">
-        <strong>Type:</strong> {project.type}
-      </p>
-      <Link className="btn btn-sm btn-outline-primary" to={`/profile/${project.fileId}`}>view profile</Link>
-    </div>
-  </div>
-</div> */}
